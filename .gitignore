@@ -26,3 +26,17 @@
 *.exe
 *.out
 *.app
+*.root
+
+#output
+output
+o_*
+*.rndm
+result*
+*~
+.DS_Store
+y_*
+#*
+
+#build directory
+build*
