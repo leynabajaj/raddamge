@@ -82,18 +82,17 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
 	    theMaterial->GetName().compare("G4_Cu")==0 ||
 	    theMaterial->GetName().compare("G4_Pb")==0){
       material=0;
-      fillTree=0;
-    }else fillTree=0;
+    }
 
     std::string volNm = thePrePoint->GetTouchableHandle()->GetVolume()->GetName();
-    if(volNm.compare(0,6,"detOut")==0){
-      detID = 200 + std::atoi(volNm.substr(7).c_str());
-    }else if(volNm.compare(0,11,"detUpStream")==0){
-      detID = 100 + std::atoi(volNm.substr(12).c_str());
-    }else if(volNm.compare(0,11,"detDnStream")==0){
-      detID = 300 + std::atoi(volNm.substr(12).c_str());
+    if(volNm.compare("detUS_PV")==0){
+      detID = 0;
+    }else if(volNm.compare("detDS_PV")==0){
+      detID = 1;
+    }else{
+      fillTree=0;
     }
-    
+
     pType = particleType->GetPDGEncoding();    
     trackID = theStep->GetTrack()->GetTrackID();
     parentID = theStep->GetTrack()->GetParentID();
