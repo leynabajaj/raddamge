@@ -23,9 +23,10 @@ mscPrimaryGeneratorAction::mscPrimaryGeneratorAction()
 
   // default particle kinematic
   G4ParticleDefinition* particleDefinition 
-    = G4ParticleTable::GetParticleTable()->FindParticle("n");
+    = G4ParticleTable::GetParticleTable()->FindParticle("neutron");
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+  //FIXME Caryn this is the energy of the neutron 
   fParticleGun->SetParticleEnergy(25.*MeV);
 }
 
@@ -42,7 +43,7 @@ void mscPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {  
 
   // Set gun position
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., - 8.*cm));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -0.25*cm));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
