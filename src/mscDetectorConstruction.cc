@@ -30,33 +30,52 @@
 #include "G4SolidStore.hh"
 #include "G4LogicalVolumeStore.hh"
 #include "G4PhysicalVolumeStore.hh"
- 
-#include <stdio.h>
 
+//geometry update
+#include "G4LogicalBorderSurface.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 mscDetectorConstruction::mscDetectorConstruction()
  : G4VUserDetectorConstruction(),
+   targetLen(1*cm),
+   targetMaterial("G4_W"),
    fCheckOverlaps(true)
 {  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 mscDetectorConstruction::~mscDetectorConstruction()
 { 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void mscDetectorConstruction::UpdateGeometry()
+{
+    // taken from LXe example
+  G4GeometryManager::GetInstance()->OpenGeometry();
 
+  // clean up previous geometry
+  G4PhysicalVolumeStore  ::GetInstance()->Clean();
+  G4LogicalVolumeStore   ::GetInstance()->Clean();
+  G4SolidStore           ::GetInstance()->Clean();
+  G4LogicalBorderSurface ::CleanSurfaceTable();
+
+  // define new geometry
+  G4RunManager::GetRunManager()->DefineWorldVolume(Construct());
+  G4RunManager::GetRunManager()->GeometryHasBeenModified();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 G4VPhysicalVolume* mscDetectorConstruction::Construct()
 {
   // Define materials 
   DefineMaterials();
+  G4cout<<"Construct with target made out of "<<targetMaterial<<" of Length "<<targetLen/cm<<" cm."
+	<<G4endl;
 
   // Get materials
   G4Material* vacuumMaterial = G4Material::GetMaterial("Galactic");
-  G4Material* tgtMaterial = G4Material::GetMaterial("G4_W");
+  G4Material* tgtMaterial = G4Material::GetMaterial(targetMaterial);
 
   if ( !tgtMaterial || !vacuumMaterial) {
     G4cerr << __PRETTY_FUNCTION__ << " Cannot retrieve materials already defined. " << G4endl;
@@ -89,11 +108,9 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
   //Target
   G4double tgtR = 50 * cm;
 
-  //FIXME  Caryn this is will be the thickness of the target
-  G4double tgtLen = 1*cm;
   G4VSolid* tgtS 
     = new G4Tubs("targetS",           // its name
-                 0, tgtR, tgtLen/2., //inner R, outer R, length
+                 0, tgtR, targetLen/2., //inner R, outer R, length
 		 0*deg,360*deg);
   G4LogicalVolume* tgtL
     = new G4LogicalVolume(
@@ -105,7 +122,7 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
   tgtVisAtt->SetForceSolid(true);
   tgtVisAtt->SetVisibility(true);
   tgtL->SetVisAttributes(tgtVisAtt);
-  new G4PVPlacement(0,G4ThreeVector(0,0,tgtLen/2.),
+  new G4PVPlacement(0,G4ThreeVector(0,0,targetLen/2.),
                  tgtL,             // its logical volume                         
                  "target",         // its name
                  worldLV,          // its mother  volume
@@ -151,7 +168,7 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
                  vacuumMaterial,  // its material
                  "detDS_L");         // its name
   detDS_L->SetVisAttributes(detVisAtt);
-  new G4PVPlacement(0,G4ThreeVector(0,0,tgtLen + 0.5*cm),
+  new G4PVPlacement(0,G4ThreeVector(0,0,targetLen + 0.5*cm),
                  detDS_L,             // its logical volume                         
                  "detDS_PV",         // its name
                  worldLV,          // its mother  volume
@@ -169,6 +186,9 @@ void mscDetectorConstruction::DefineMaterials()
   G4NistManager* nistManager = G4NistManager::Instance();
   nistManager->FindOrBuildMaterial("G4_Pb");
   nistManager->FindOrBuildMaterial("G4_W");
+  nistManager->FindOrBuildMaterial("G4_CONCRETE");
+  nistManager->FindOrBuildMaterial("G4_Fe");
+  nistManager->FindOrBuildMaterial("G4_POLYETHYLENE");
 
   // // Vacuum
   new G4Material("Galactic", 1., 1.01*g/mole, universe_mean_density,
