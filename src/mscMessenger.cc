@@ -4,6 +4,7 @@
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
 #include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithoutParameter.hh"
 
 #include "mscDetectorConstruction.hh"
 #include "mscEventAction.hh"
@@ -33,12 +34,23 @@ mscMessenger::mscMessenger(){
     tgtMatCmd = new G4UIcmdWithAString("/msc/det/setTargetMaterial",this);
     tgtMatCmd->SetParameterName("tgtMat", false);
 
+    outNmCmd = new G4UIcmdWithAString("/msc/step/setOutFileName",this);
+    outNmCmd->SetParameterName("outNm", false);
+
+    tgtLenCmd = new G4UIcmdWithADoubleAndUnit("/msc/det/setTargetLength",this);
+    tgtLenCmd->SetParameterName("tgtLength", false);
+
+    updateGeoCmd = new G4UIcmdWithoutParameter("/msc/det/updateGeometry",this);
+    updateGeoCmd->AvailableForStates(G4State_Idle);
 }
 
 mscMessenger::~mscMessenger(){
-  delete nrDetCmd;
-  delete gunEnergyCmd;
-  delete tgtMatCmd;
+  if(nrDetCmd) delete nrDetCmd;
+  if(gunEnergyCmd) delete gunEnergyCmd;
+  if(tgtMatCmd) delete tgtMatCmd;
+  if(outNmCmd) delete outNmCmd;
+  if(tgtLenCmd) delete tgtLenCmd;
+  if(updateGeoCmd) delete updateGeoCmd;
 }
 
 
@@ -47,11 +59,25 @@ void mscMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue){
   if( cmd == nrDetCmd ){
     G4int val = nrDetCmd->GetNewIntValue(newValue);
     fDetCon -> SetNrDetectors( val );
+
   }else if( cmd == gunEnergyCmd ){
     G4double val = gunEnergyCmd->GetNewDoubleValue(newValue);
     fPriGen->SetGunEnergy( val );
+
   }else if( cmd == tgtMatCmd ){
     fDetCon->SetTargetMaterial( newValue );
+
+  }else if( cmd == outNmCmd ){
+    fStepAct->SetOutputFileName( newValue );
+    fStepAct->InitOutput();
+
+  }else if( cmd == updateGeoCmd ){
+    fDetCon -> UpdateGeometry();
+
+  }else if( cmd == tgtLenCmd ){
+    G4double val = tgtLenCmd->GetNewDoubleValue(newValue);
+    fDetCon -> SetTargetLength(val);
+
   }else{
     G4cerr << __PRETTY_FUNCTION__
 	   <<" what command are you talking about? "<<cmd<<" "<<newValue<<G4endl;

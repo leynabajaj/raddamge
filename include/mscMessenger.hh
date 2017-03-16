@@ -14,6 +14,7 @@ class G4UIcmdWithAnInteger;
 class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithAString;
 class G4UIcmdWithABool;
+class G4UIcmdWithoutParameter;
 
 class mscMessenger : public G4UImessenger {
 public:
@@ -36,7 +37,9 @@ private:
   G4UIcmdWithAnInteger *nrDetCmd;
   G4UIcmdWithAString *tgtMatCmd;
   G4UIcmdWithADoubleAndUnit *gunEnergyCmd;
-  
+  G4UIcmdWithAString *outNmCmd;
+  G4UIcmdWithADoubleAndUnit *tgtLenCmd;
+  G4UIcmdWithoutParameter *updateGeoCmd;
 };
 
 #endif//mscMessenger_HH
