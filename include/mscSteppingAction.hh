@@ -2,6 +2,7 @@
 #define mscSteppingAction_hh 1
 
 #include "G4UserSteppingAction.hh"
+#include "G4String.hh"
 #include "globals.hh"
 
 #include "TFile.h"
@@ -19,7 +20,9 @@ public:
   void UserSteppingAction(const G4Step*);
   void InitVar();
   void InitOutput();
-    
+
+  void SetOutputFileName(G4String val){foutName=val;}
+  
 private:
   G4int *evNr;
   TFile *fout;
@@ -33,6 +36,7 @@ private:
   G4int pType;    
   G4int trackID;
   G4int parentID;
+  G4String foutName;
   
   //1XX= front detector with id XX 
   //2XX= radial detector with id XX
