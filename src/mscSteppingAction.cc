@@ -12,16 +12,17 @@
 #include <fstream>
 
 mscSteppingAction::mscSteppingAction(G4int *evN)
+  :foutName("o_radTree.root")
 {
   //eventID pointer from the mscEventAction.cc file
   evNr=evN;
-  InitOutput();
 }
 
 void  mscSteppingAction::InitOutput(){
 
   /*Create root file and initialize what I want to put in it*/
-  fout=new TFile("o_radTree.root","RECREATE");
+  
+  fout=new TFile(foutName.c_str(),"RECREATE");
 
   tout=new TTree("t","Stepping action event tree");
     
@@ -67,6 +68,10 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
   G4ThreeVector _polarization=theTrack->GetPolarization();
   G4String _pn=thePostPoint->GetProcessDefinedStep()->GetProcessName();
 
+  if(fout==NULL){
+    InitOutput();
+  }
+  
   InitVar();  
   
   eventNr=*evNr;
@@ -80,6 +85,8 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
     if(theMaterial->GetName().compare("Galactic")==0)    material=1;
     else if(theMaterial->GetName().compare("G4_W")==0 ||
 	    theMaterial->GetName().compare("G4_Cu")==0 ||
+	    theMaterial->GetName().compare("G4_POLYETHYLENE")==0 ||
+	    theMaterial->GetName().compare("G4_Fe")==0 ||
 	    theMaterial->GetName().compare("G4_Pb")==0){
       material=0;
     }
