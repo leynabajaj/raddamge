@@ -18,15 +18,18 @@ public:
   virtual G4VPhysicalVolume* Construct();
 
   void SetNrDetectors( G4int val ){nrDet = val;}
-  void SetTargetMaterial(std::string val){targetMaterial = val;}
-
+  void SetTargetMaterial(G4String val){targetMaterial = val;}
+  void SetTargetLength(G4double val){targetLen = val;}
+  void UpdateGeometry();
+  
 private:
   // methods
   void DefineMaterials();  
 
   // data members
   G4int nrDet;
-  std::string targetMaterial;
+  G4double targetLen;
+  G4String targetMaterial;
   G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 };
 
