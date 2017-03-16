@@ -1,2 +1,7 @@
 /msc/event/setPrintModulo 10000
-/run/beamOn 200000
+/msc/gun/setGunEnergy 30 MeV		  
+/msc/det/setTargetMaterial G4_Pb
+/msc/det/setTargetLength 4 cm
+/msc/det/updateGeometry
+/msc/step/setOutFileName o_tranRef_tst.root
+/run/beamOn 100000
