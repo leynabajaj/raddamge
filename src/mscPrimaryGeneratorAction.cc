@@ -26,8 +26,7 @@ mscPrimaryGeneratorAction::mscPrimaryGeneratorAction()
     = G4ParticleTable::GetParticleTable()->FindParticle("neutron");
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  //FIXME Caryn this is the energy of the neutron 
-  fParticleGun->SetParticleEnergy(25.*MeV);
+  G4cout<<"Particle gun constructor:: Default fun energy:"<<gunEnergy<<G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -45,6 +44,8 @@ void mscPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // Set gun position
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -0.25*cm));
 
+  fParticleGun->SetParticleEnergy(gunEnergy);
+  
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
 
