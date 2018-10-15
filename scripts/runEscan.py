@@ -6,6 +6,7 @@ def main():
 
     ### always check that you have the ranges you need
     beamEnergy=[25, 50, 100, 150, 200, 300, 400]
+    #beamEnergy=[500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000]
 
     # material="G4_W"
     # thickness=[1,5,10,15]
@@ -16,11 +17,11 @@ def main():
     # material="G4_Fe"
     # thickness=[2.44,12.20,24.39,36.59]
 
-    material="G4_CONCRETE"
-    thickness=[8.33,41.66,83.33,125.00]
+    # material="G4_CONCRETE"
+    # thickness=[8.33,41.66,83.33,125.00]
 
-    # material="G4_POLYETHYLENE"
-    # thickness=[20.41,102.04,204.08,306.12]
+    material="G4_POLYETHYLENE"
+    thickness=[20.41,102.04,204.08,306.12]
 
     ### logistic info
     sourceDir="/home/ciprian/prex/radDamage"
