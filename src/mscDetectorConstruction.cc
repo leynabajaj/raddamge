@@ -106,7 +106,7 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
                  fCheckOverlaps);  // checking overlaps 
 
   //Target
-  G4double tgtR = 50 * cm;
+  G4double tgtR = 200 * cm;
 
   G4VSolid* tgtS 
     = new G4Tubs("targetS",           // its name
@@ -193,7 +193,7 @@ void mscDetectorConstruction::DefineMaterials()
   // // Vacuum
   new G4Material("Galactic", 1., 1.01*g/mole, universe_mean_density,
 		 kStateGas, 2.73*kelvin, 3.e-18*pascal);
-    
+
   // Print materials
   G4cout << G4endl << G4endl << "~~~~~~~~~~~~~~~~~~~~~Material Printout~~~~~~~~~~~~~~~~~~~~~~~~" << G4endl;
   G4cout << *(G4Material::GetMaterialTable()) << G4endl << G4endl;
