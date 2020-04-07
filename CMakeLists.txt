@@ -40,7 +40,8 @@ message(STATUS "Geant4 include files come from: ${Geant4_USE_FILE}")
 
 # Load ROOT and setup include directory
 find_package(ROOT REQUIRED)
-include_directories(${ROOT_INCLUDE_DIR})
+#include_directories(${ROOT_INCLUDE_DIR})
+include_directories(/home/chad/software/root/root-build/include)
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries

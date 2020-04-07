@@ -37,7 +37,7 @@
 
 mscDetectorConstruction::mscDetectorConstruction()
  : G4VUserDetectorConstruction(),
-   targetLen(1*cm),
+   targetLen(10*cm),
    targetMaterial("G4_W"),
    fCheckOverlaps(true)
 {  
@@ -184,16 +184,27 @@ void mscDetectorConstruction::DefineMaterials()
 { 
 
   G4NistManager* nistManager = G4NistManager::Instance();
+  nistManager->FindOrBuildMaterial("G4_H");
+  nistManager->FindOrBuildMaterial("G4_C");
   nistManager->FindOrBuildMaterial("G4_Pb");
   nistManager->FindOrBuildMaterial("G4_W");
+  nistManager->FindOrBuildMaterial("G4_Al");
+  nistManager->FindOrBuildMaterial("G4_STAINLESS-STEEL");
   nistManager->FindOrBuildMaterial("G4_CONCRETE");
   nistManager->FindOrBuildMaterial("G4_Fe");
   nistManager->FindOrBuildMaterial("G4_POLYETHYLENE");
 
+  G4Element* H  = new G4Element("Hydrogen","H",1, 1.01*g/mole);
+  G4Element* C  = new G4Element("Carbon","C", 6, 12.01*g/mole);
+  G4Element* B  = new G4Element("Boron","B",5,10.811*g/mole);
   // // Vacuum
   new G4Material("Galactic", 1., 1.01*g/mole, universe_mean_density,
 		 kStateGas, 2.73*kelvin, 3.e-18*pascal);
 
+  G4Material * Borated_Polythene = new G4Material("Borated_Polythene", 1.19*g/cm3,3);
+  Borated_Polythene->AddElement(B,0.300);
+  Borated_Polythene->AddElement(H,0.1006);
+  Borated_Polythene->AddElement(C,0.5994);
   // Print materials
   G4cout << G4endl << G4endl << "~~~~~~~~~~~~~~~~~~~~~Material Printout~~~~~~~~~~~~~~~~~~~~~~~~" << G4endl;
   G4cout << *(G4Material::GetMaterialTable()) << G4endl << G4endl;
