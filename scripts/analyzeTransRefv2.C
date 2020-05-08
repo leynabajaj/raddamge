@@ -1,19 +1,19 @@
 TCanvas *c1=new TCanvas("c1","c1",1400,600);
-string onm="y_TransRef_PDGid2112_15_20cm.pdf";
-string ofnm = "E_TranRef_PDGid2112_15_20cm.root";
+string onm="Boron10_y_TransRef_PDGid22_3cm_NotHP.pdf";
+string ofnm = "Boron10_E_TranRef_PDGid22_3cm_NotHP.root";
 const int nEnergy = 1;
 const float nEv=1e5;
 const int nMat = 1;
-const int nThick = 2;
-const int pdgID = 2112;
+const int nThick = 1;
+const int pdgID = 22;
 
 void niceLogBins(TH1*);
-void extractOneFile(int e, double thick, double effThick,
+void extractOneFile(double e, double thick, double effThick,
 		    string mat,TH1D *h[2]);
 
 void analyzeTransRefv2(){
 
-  string materials[nMat] ={"G4_Pb"}; 
+  string materials[nMat] ={"Mat_Boron"}; 
   
   /*{
 			 "G4_W",
@@ -22,7 +22,7 @@ void analyzeTransRefv2(){
 			 "G4_POLYETHYLENE",
 			 "G4_CONCRETE"  };*/
 
-  double thickness[nMat][nThick]={{15,20}};
+  double thickness[nMat][nThick]={{3}};
 				 /* {1,5,10,15},
 				  {1.69,8.47,16.95,25.42},
 				  {2.44,12.20,24.39,36.59},
@@ -33,7 +33,7 @@ void analyzeTransRefv2(){
 		       600, 700, 800, 900, 1000, 1250, 1500,
 		       1750, 2000, 2250, 2500, 2750, 3000};*/
 
-  double energy[nEnergy] = {3000};
+  double energy[nEnergy] = {0.025};
   c1->Print(Form("%s[",onm.c_str()),"pdf");
 
   TFile *fout=new TFile(ofnm.c_str(),"RECREATE");
@@ -57,12 +57,12 @@ void analyzeTransRefv2(){
   c1->Print(Form("%s]",onm.c_str()),"pdf");
 }
 
-void extractOneFile(int e, double thick, double effThick,
+void extractOneFile(double e, double thick, double effThick,
 		    string mat,TH1D *h[2]){
   string tr[2]={"T","R"};
   string trCut[2]={"detID==1","detID==0"};
   std::cout<<"Inside ExtractOneFile  - e "<<e<<"  thick  "<<thick<<"  mat  "<<mat<<std::endl;
-  string fnm = Form("./%04dMeV-%03.1fcm%s/E_TranRef%04dMeV-%03.1fcm%s-1e6.root",
+  string fnm = Form("./NeutronNotHP%04.3feV-%03.1fcm%s/E_TranRefNeutronNotHP%04.3feV-%03.1fcm%s-1e5.root",
 		    e, thick, mat.c_str(), e, thick, mat.c_str());
   cout<<"trying "<<fnm<<endl;
   TFile *fin = TFile::Open(fnm.c_str(),"READ");
@@ -75,10 +75,10 @@ void extractOneFile(int e, double thick, double effThick,
   gStyle->SetOptStat("eMRou");
 
   for(int i=0;i<2;i++){
-    string hTl=Form("%s | Ebeam=%d | thick = %6.2f | TR = %s;kinetic energy [MeV]",
+    string hTl=Form("%s | Ebeam=%f eV| thick = %6.2f | TR = %s;kinetic energy [MeV]",
 		    mat.c_str(),e,thick,tr[i].c_str());
     string hnm=Form("%s_%s_%d_%d",tr[i].c_str(),mat.c_str(),int(e),int(effThick));
-    h[i] = new TH1D(hnm.c_str(),hTl.c_str(),120,-2,4);
+    h[i] = new TH1D(hnm.c_str(),hTl.c_str(),120,-8,4);
     niceLogBins(h[i]);
 
     c1->cd(1);
