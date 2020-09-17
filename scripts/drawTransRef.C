@@ -1,8 +1,8 @@
 void drawTransRef(){
   //TFile *fin=TFile::Open("o_TransRefl.root","READ");
-  TFile *fin=TFile::Open("Lead_TransRefl_PDGid22_Ecut0.root","READ");
-  const int nThickness = 8;
-  const int nEnergy = 5;
+  TFile *fin=TFile::Open("PionLeadPionTransRefl_PDGide_Ecut0.root","READ");
+  const int nThickness = 4;
+  const int nEnergy = 3;
   string materials[1] = {"G4_Pb"};
 		/*	 "G4_W",
 			 "G4_Pb",
@@ -12,8 +12,8 @@ void drawTransRef(){
   };*/
   //double thick[nThickness]={1,2,5,10,15,20};
   //double thick[nThickness]={5,10,20,30,40,50,60};
-  double thick[nThickness]={1,2,5,10,15,20,25,50};
-  double energy[nEnergy] = {100,150,200,250,500};
+  double thick[nThickness]={15,20,25,30};
+  double energy[nEnergy] = {2000,5000,8000};
   /*double thick[4]={5,7.5,10,12.5};
   double energy[7] = {500, 1000, 1500, 2000, 3000, 5000, 8000};*/
   int colorMat[1]={1};
@@ -30,10 +30,10 @@ void drawTransRef(){
       for(int k=0;k<2;k++){
 	if(i<nThickness){
 	  gNm = Form("TvsE_%s_%s_%d" ,materials[j].c_str(),typeHit[k].c_str(),int(thick[i]));
-	  title = Form("%s for 1e5 evt| %d thick;energy[keV]",typeHit[k].c_str(),int(thick[i]));
+	  title = Form("%s for 1e5 evt| %d thick;energy[MeV]",typeHit[k].c_str(),int(thick[i]));
 	}else{
 	  gNm = Form("TvsZ_%s_%s_%d" ,materials[j].c_str(),typeHit[k].c_str(),int(energy[i-nThickness]));
-	  title = Form("%s for 1e5 evt| E=%d keV; Thickness [mm]; fraction",
+	  title = Form("%s for 1e5 evt| E=%d MeV; Thickness [cm]; fraction",
 		       typeHit[k].c_str(),int(energy[i-nThickness]));
 	}
 	cout<<"reading "<<gNm<<"\t"<<title<<endl;

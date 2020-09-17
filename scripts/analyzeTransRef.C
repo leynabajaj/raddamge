@@ -1,11 +1,11 @@
 TCanvas *c1=new TCanvas("c1","c1",1400,600);
-string onm="Concrete_TransRef_PDGid22_Ecut0.pdf";
-string ofnm = "Concrete_TransRefl_PDGid22_Ecut0.root";
+string onm="PionLeadPionTransRef_PDGid211_Ecut0.pdf";
+string ofnm = "PionLeadPionTransRefl_PDGid211_Ecut0.root";
 const int nEnergy = 1;
-const int nThickness = 1;
+const int nThickness = 4;
 const int nMaterial = 1;
 const float nEv=1e5;
-int pdgID = 22;
+int pdgID = -211;
 string eCut="preKE>0";
 
 void analyzeOneMaterial(string material, int pdgID, TGraph *g[2][2][nThickness+nEnergy], double thickness[nThickness], double effThick[nThickness]);
@@ -13,7 +13,7 @@ void extractOneFile(int e, double thick, string mat, int pdgID,double trans[2], 
 
 void analyzeTransRef(){
 
-  string materials[nMaterial] = {"G4_Concrete"};
+  string materials[nMaterial] = {"G4_Pb"};
 		/*	 "G4_W",
 			 "G4_Pb",
 			 "G4_Fe",
@@ -23,7 +23,7 @@ void analyzeTransRef(){
   };*/
   int colorMat[nMaterial]={1};
 //  double thicknesses[nMaterial][nThickness]={{1,2,5,20,40,60,80,100,150,200}};
-  double thicknesses[nMaterial][nThickness]={{11}};
+  double thicknesses[nMaterial][nThickness]={{15,20,25,30}};
 			/*    {5,7.5,10,12.5}};
 			    {1.69,8.47,16.95,25.42},
 			    {2.44,12.20,24.39,36.59},
@@ -71,7 +71,7 @@ void analyzeOneMaterial(string material, int pdgID, TGraph *g[2][2][nThickness+n
   //[hits, EweightHits][thickenss][energy]
   double trans[2][nThickness][nEnergy], refl[2][nThickness][nEnergy];
   //double energy[7] = {500,1000,1500,2000,3000,5000,8000};
-  double energy[nEnergy] = {0.025};
+  double energy[nEnergy] = {2000};
 
   for(int i = 0 ; i < nThickness ; i++ )//thickness
     for(int j = 0 ; j < nEnergy; j++){
@@ -125,7 +125,7 @@ void analyzeOneMaterial(string material, int pdgID, TGraph *g[2][2][nThickness+n
 
 void extractOneFile(int e, double thick, string mat, int pdgID,
 		    double trans[2], double ref[2]){
-  string fnm = Form("./Neutron%04.3eV-%03.1fcm%s/E_TranRefNeutron%04.3eV-%03.1fcm%s-1e5.root",
+  string fnm = Form("./PionLeadPion%04dMeV-%03.1fcm%s/E_TranRefPionLeadPion%04dMeV-%03.1fcm%s-1e5.root",
 		    e, thick, mat.c_str(), e, thick, mat.c_str());
   TFile *fin = TFile::Open(fnm.c_str(),"READ");
   TTree *t=(TTree*)fin->Get("t");

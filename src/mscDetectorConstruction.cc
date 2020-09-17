@@ -37,7 +37,7 @@
 
 mscDetectorConstruction::mscDetectorConstruction()
  : G4VUserDetectorConstruction(),
-   targetLen(10*cm),
+   targetLen(20*cm),
    targetMaterial("G4_W"),
    fCheckOverlaps(true)
 {  
@@ -76,6 +76,7 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
   // Get materials
   G4Material* vacuumMaterial = G4Material::GetMaterial("Galactic");
   G4Material* tgtMaterial = G4Material::GetMaterial(targetMaterial);
+  G4Material* tgtMaterial1 = G4Material::GetMaterial("G4_CONCRETE");
 
   if ( !tgtMaterial || !vacuumMaterial) {
     G4cerr << __PRETTY_FUNCTION__ << " Cannot retrieve materials already defined. " << G4endl;
@@ -129,7 +130,30 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
-
+/*
+  G4VSolid* tgtS1 
+    = new G4Tubs("targetS1",           // its name
+                 0, tgtR, 5*cm, //inner R, outer R, length
+		 0*deg,360*deg);
+  G4LogicalVolume* tgtL1
+    = new G4LogicalVolume(
+                 tgtS1,           // its solid
+                 tgtMaterial1,  // its material
+                 "targetL1");         // its name
+  G4Colour  green(0/255.,255/255.,0/255.);
+  G4VisAttributes* tgtVisAtt1 = new G4VisAttributes(green);
+  tgtVisAtt1->SetForceSolid(true);
+  tgtVisAtt1->SetVisibility(true);
+  tgtL1->SetVisAttributes(tgtVisAtt1);
+  new G4PVPlacement(0,G4ThreeVector(0,0,-5*cm),
+                 tgtL1,             // its logical volume                         
+                 "target1",         // its name
+                 worldLV,          // its mother  volume
+                 false,            // no boolean operation
+                 0,                // copy number
+                 fCheckOverlaps);  // checking overlaps 
+  
+		 */
   //
   //Detectors
   //
