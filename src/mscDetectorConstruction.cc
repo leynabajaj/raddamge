@@ -229,6 +229,89 @@ void mscDetectorConstruction::DefineMaterials()
   Borated_Polythene->AddElement(B,0.300);
   Borated_Polythene->AddElement(H,0.1006);
   Borated_Polythene->AddElement(C,0.5994);
+
+  G4double weightRatio(0);
+  G4double density(0);
+  G4int nComponents(0);
+  G4Material *lightConcrete = new G4Material("LightConcrete", density=1.526*g/cm3, nComponents=15);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Al"), weightRatio=0.0715247535321842);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Ba"), weightRatio=0.000292615925692978);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Ca"), weightRatio=0.0902578428842246);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Fe"), weightRatio=0.0443403751565724);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_H") , weightRatio=0.0126910373153661);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_K") , weightRatio=0.0181825600330761);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_O") , weightRatio=0.0117754923569376);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_P") , weightRatio=0.000961479923817951);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_S") , weightRatio=0.0136690903190142);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Mg"), weightRatio=0.502123887700617);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Mn"), weightRatio=0.000484778323047815);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Na"), weightRatio=0.0028364585260099);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Si"), weightRatio=0.227263709531935);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Sr"), weightRatio=0.000110504797259485);
+  lightConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_Ti"), weightRatio=0.00348541367424452);
+
+  
+  G4Material *bor5crete = new G4Material("Borated5Concrete", density= 2.42*g/cm3, nComponents=2);
+  bor5crete->AddMaterial(nistManager->FindOrBuildMaterial("G4_B"), 5.*perCent);
+  bor5crete->AddMaterial(nistManager->FindOrBuildMaterial("G4_CONCRETE"), 95.*perCent);
+
+  G4Material *Na2O = new G4Material("Na2O",density=2.27*g/cm3,nComponents=2);
+  Na2O->AddElement(nistManager->FindOrBuildElement("Na"),2);
+  Na2O->AddElement(nistManager->FindOrBuildElement("O"),1);
+
+  G4Material *P2O5 = new G4Material("P2O5",density=2.39*g/cm3,nComponents=2);
+  P2O5->AddElement(nistManager->FindOrBuildElement("P"),2);
+  P2O5->AddElement(nistManager->FindOrBuildElement("O"),5);
+
+  G4Material *SO2 = new G4Material("SO2",density=2.63*g/cm3,nComponents=2);
+  SO2->AddElement(nistManager->FindOrBuildElement("S"),1);
+  SO2->AddElement(nistManager->FindOrBuildElement("O"),2);
+
+  G4Material *NaCl = new G4Material("NaCl",density=2.16*g/cm3,nComponents=2);
+  NaCl->AddElement(nistManager->FindOrBuildElement("Na"),1);
+  NaCl->AddElement(nistManager->FindOrBuildElement("Cl"),1);
+
+  G4Material *MnO2 = new G4Material("MnO2",density=5.03*g/cm3,nComponents=2);
+  MnO2->AddElement(nistManager->FindOrBuildElement("Mn"),1);
+  MnO2->AddElement(nistManager->FindOrBuildElement("O"),2);
+
+  G4Material *NiO = new G4Material("NiO",density=6.67*g/cm3,nComponents=2);
+  NiO->AddElement(nistManager->FindOrBuildElement("Ni"),1);
+  NiO->AddElement(nistManager->FindOrBuildElement("O"),1);
+
+  G4Material *cement = new G4Material("cement",density=3.13*g/cm3,nComponents=7);
+  cement->AddMaterial(nistManager->FindOrBuildMaterial("G4_CALCIUM_OXIDE"),weightRatio=0.60486);
+  cement->AddMaterial(nistManager->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE"),weightRatio=0.03530);
+  cement->AddMaterial(nistManager->FindOrBuildMaterial("G4_POTASSIUM_OXIDE"),weightRatio=0.00109);
+  cement->AddMaterial(nistManager->FindOrBuildMaterial("G4_FERRIC_OXIDE"),weightRatio=0.03778);
+  cement->AddMaterial(nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE"),weightRatio=0.22370);
+  cement->AddMaterial(nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE"),weightRatio=0.07050);
+  cement->AddMaterial(SO2,weightRatio=0.02677);
+
+  G4Material *barite = new G4Material("barite",density=4.05*g/cm3,nComponents=16);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_CALCIUM_OXIDE"),weightRatio=0.04800);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE"),weightRatio=0.00649);
+  barite->AddMaterial(Na2O,weightRatio=0.00027);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_POTASSIUM_OXIDE"),weightRatio=0.00024);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_FERRIC_OXIDE"),weightRatio=0.00229);
+  barite->AddMaterial(P2O5,weightRatio=0.00019);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE"),weightRatio=0.03293);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_WATER"),weightRatio=0.03913);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE"),weightRatio=0.01366);
+  barite->AddMaterial(SO2,weightRatio=0.00205);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_BARIUM_SULFATE"),weightRatio=0.83132);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_MAGNESIUM_CARBONATE"),weightRatio=0.00090);
+  barite->AddMaterial(NaCl,weightRatio=0.00090);
+  barite->AddMaterial(nistManager->FindOrBuildMaterial("G4_CALCIUM_CARBONATE"),weightRatio=0.01803);
+  barite->AddMaterial(MnO2,weightRatio=0.00180);
+  barite->AddMaterial(NiO,weightRatio=0.00180);
+
+
+  G4Material *BariteConcrete = new G4Material("BariteConcrete",density=3.36*g/cm3, nComponents=3);
+  BariteConcrete->AddMaterial(cement,weightRatio=0.0829);
+  BariteConcrete->AddMaterial(nistManager->FindOrBuildMaterial("G4_WATER"),weightRatio=0.0593);
+  BariteConcrete->AddMaterial(barite,weightRatio=0.8578);
+
   // Print materials
   G4cout << G4endl << G4endl << "~~~~~~~~~~~~~~~~~~~~~Material Printout~~~~~~~~~~~~~~~~~~~~~~~~" << G4endl;
   G4cout << *(G4Material::GetMaterialTable()) << G4endl << G4endl;
