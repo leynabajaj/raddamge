@@ -17,13 +17,13 @@
 #include "G4StepLimiterPhysics.hh"
 #endif
 
-#ifdef G4VIS_USE
+//#ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
-#endif
+//#endif
 
-#ifdef G4UI_USE
+//#ifdef G4UI_USE
 #include "G4UIExecutive.hh"
-#endif
+//#endif
 
 #include "G4PhysListFactory.hh"
 
@@ -107,13 +107,13 @@ int main(int argc,char** argv)
   //
   runManager->Initialize();
   
-#ifdef G4VIS_USE
+//#ifdef G4VIS_USE
   // Initialize visualization
   G4VisManager* visManager = new G4VisExecutive;
   // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
   // G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
-#endif
+//#endif
 
   // Get the pointer to the User Interface manager
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
@@ -125,22 +125,22 @@ int main(int argc,char** argv)
   }
   else  {  
     // interactive mode : define UI session
-#ifdef G4UI_USE
+//#ifdef G4UI_USE
     G4UIExecutive* ui = new G4UIExecutive(argc, argv, session);
-#ifdef G4VIS_USE
-    UImanager->ApplyCommand("/control/macroPath macros"); 
-    UImanager->ApplyCommand("/control/execute init_vis.mac"); 
-#else
-    UImanager->ApplyCommand("/control/macroPath macros"); 
-    UImanager->ApplyCommand("/control/execute init.mac"); 
-#endif
+//#ifdef G4VIS_USE
+//    UImanager->ApplyCommand("/control/macroPath macros"); 
+ //   UImanager->ApplyCommand("/control/execute init_vis.mac"); 
+//#else
+//    UImanager->ApplyCommand("/control/macroPath macros"); 
+//    UImanager->ApplyCommand("/control/execute init.mac"); 
+//#endif
     if (ui->IsGUI()){
       UImanager->ApplyCommand("/control/macroPath macros"); 
       UImanager->ApplyCommand("/control/execute gui.mac");
     }
     ui->SessionStart();
     delete ui;
-#endif
+//#endif
   }
 
   // Job termination
@@ -148,9 +148,9 @@ int main(int argc,char** argv)
   // owned and deleted by the run manager, so they should not be deleted 
   // in the main() program !
 
-#ifdef G4VIS_USE
+//#ifdef G4VIS_USE
   delete visManager;
-#endif
+//#endif
   delete runManager;
 
   G4cout<<" Running time[s]: "<< (double) ((clock() - tStart)/CLOCKS_PER_SEC)<<G4endl;
