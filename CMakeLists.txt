@@ -4,10 +4,15 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(msc)
 
+# Load ROOT and setup include directory
+find_package(ROOT REQUIRED)
+include_directories(${ROOT_INCLUDE_DIR})
+#include_directories(/home/lead/product/root/root-build/include)
+
 # Find Geant4
 SITE_NAME(mySite)
 if(${mySite} MATCHES "ifarm*")
-   set(Geant4_DIR /w/hallc-scifs2/qweak/ciprian/geant41001p01/source/geant4.10.01.p01/build)
+   # set(Geant4_DIR /w/hallc-scifs2/qweak/ciprian/geant41001p01/source/geant4.10.01.p01/build)
    message( "On ifarm using custom geant4_dir: " ${Geant4_DIR})
    find_package(Geant4 REQUIRED COMPONENTS gdml qt ui_all vis_all)
    execute_process(COMMAND ${Geant4_DIR}/geant4-config --version
@@ -26,7 +31,9 @@ endif()
 message(STATUS "Found Geant4 ${GEANT4_VERSION}")
 
 # Add the project include directory and put all source files in sources
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include
+		    ${Geant4_INCLUDE_DIR}
+		    ${ROOT_INCLUDE_DIRS})
 file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hh)
 
@@ -37,11 +44,6 @@ file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hh)
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 message(STATUS "Geant4 include files come from: ${Geant4_USE_FILE}")
-
-# Load ROOT and setup include directory
-find_package(ROOT REQUIRED)
-#include_directories(${ROOT_INCLUDE_DIR})
-include_directories(/home/lead/product/root/root-build/include)
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
