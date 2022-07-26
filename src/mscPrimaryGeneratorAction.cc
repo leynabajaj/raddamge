@@ -16,14 +16,14 @@
 mscPrimaryGeneratorAction::mscPrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction(),
    fParticleGun(0),
-   gunEnergy(3000.)
+   gunEnergy(200.)
 {
   G4int nofParticles = 1;
   fParticleGun = new G4ParticleGun(nofParticles);
 
   // default particle kinematic
   G4ParticleDefinition* particleDefinition 
-    = G4ParticleTable::GetParticleTable()->FindParticle("pi-");
+    = G4ParticleTable::GetParticleTable()->FindParticle("mu-");
     //= G4ParticleTable::GetParticleTable()->FindParticle("gamma");
     //= G4ParticleTable::GetParticleTable()->FindParticle("gamma");
     //= G4ParticleTable::GetParticleTable()->FindParticle("neutron");
@@ -36,6 +36,7 @@ mscPrimaryGeneratorAction::mscPrimaryGeneratorAction()
 
 mscPrimaryGeneratorAction::~mscPrimaryGeneratorAction()
 {
+  G4cout<<"Particle gun constructor:: Default gun energy:"<<gunEnergy<<G4endl;
   delete fParticleGun;
 }
 

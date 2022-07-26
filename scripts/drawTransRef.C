@@ -1,8 +1,8 @@
 void drawTransRef(){
   //TFile *fin=TFile::Open("o_TransRefl.root","READ");
-  TFile *fin=TFile::Open("PionLeadPionTransRefl_PDGide_Ecut0.root","READ");
-  const int nThickness = 4;
-  const int nEnergy = 3;
+  TFile *fin=TFile::Open("Mu2LeadMuTransRefl_PDGid11_Ecut0.root","READ");
+  const int nThickness = 9;
+  const int nEnergy = 2;
   string materials[1] = {"G4_Pb"};
 		/*	 "G4_W",
 			 "G4_Pb",
@@ -12,8 +12,8 @@ void drawTransRef(){
   };*/
   //double thick[nThickness]={1,2,5,10,15,20};
   //double thick[nThickness]={5,10,20,30,40,50,60};
-  double thick[nThickness]={15,20,25,30};
-  double energy[nEnergy] = {2000,5000,8000};
+  double thick[nThickness]={5,10,11,12,13,14,15,16,20};
+  double energy[nEnergy] = {200,300};
   /*double thick[4]={5,7.5,10,12.5};
   double energy[7] = {500, 1000, 1500, 2000, 3000, 5000, 8000};*/
   int colorMat[1]={1};
@@ -48,9 +48,15 @@ void drawTransRef(){
 	  gr->SetTitle(title.c_str());
 	  if(i>=nThickness)
 	  gr->Draw("APL");
-	//gr->SetMinimum(1.0e-10);
+	if(k==0){
+	gr->GetYaxis()->SetNdivisions(404);
+	gr->SetMinimum(1.0e-1);
+	gr->SetMaximum(1.2e0);}
+	else {
+	gr->GetYaxis()->SetNdivisions(404);
+	gr->SetMinimum(1.0e-2);
+	gr->SetMaximum(1.0e0);}
 	gr->GetYaxis()->SetTitleOffset(1.5);
-	//gr->GetYaxis()->SetNDdivisions(404);
 	}else
 	  gr->Draw("P");
       }

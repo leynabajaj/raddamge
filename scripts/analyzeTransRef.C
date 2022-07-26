@@ -1,12 +1,12 @@
 TCanvas *c1=new TCanvas("c1","c1",1400,600);
-string onm="PionLeadPionTransRef_PDGid211_Ecut0.pdf";
-string ofnm = "PionLeadPionTransRefl_PDGid211_Ecut0.root";
-const int nEnergy = 1;
-const int nThickness = 4;
+string onm="Mu2LeadMuTransRef_PDGid11_Ecut0.pdf";
+string ofnm = "Mu2LeadMuTransRefl_PDGid11_Ecut0.root";
+const int nEnergy = 2;
+const int nThickness = 9;
 const int nMaterial = 1;
 const float nEv=1e5;
-int pdgID = -211;
-string eCut="preKE>0";
+int pdgID = 13;
+string eCut="preKE>1";
 
 void analyzeOneMaterial(string material, int pdgID, TGraph *g[2][2][nThickness+nEnergy], double thickness[nThickness], double effThick[nThickness]);
 void extractOneFile(int e, double thick, string mat, int pdgID,double trans[2], double ref[2]);
@@ -23,7 +23,7 @@ void analyzeTransRef(){
   };*/
   int colorMat[nMaterial]={1};
 //  double thicknesses[nMaterial][nThickness]={{1,2,5,20,40,60,80,100,150,200}};
-  double thicknesses[nMaterial][nThickness]={{15,20,25,30}};
+  double thicknesses[nMaterial][nThickness]={{5,10,11,12,13,14,15,16,20}};
 			/*    {5,7.5,10,12.5}};
 			    {1.69,8.47,16.95,25.42},
 			    {2.44,12.20,24.39,36.59},
@@ -71,7 +71,7 @@ void analyzeOneMaterial(string material, int pdgID, TGraph *g[2][2][nThickness+n
   //[hits, EweightHits][thickenss][energy]
   double trans[2][nThickness][nEnergy], refl[2][nThickness][nEnergy];
   //double energy[7] = {500,1000,1500,2000,3000,5000,8000};
-  double energy[nEnergy] = {2000};
+  double energy[nEnergy] = {200,300};
 
   for(int i = 0 ; i < nThickness ; i++ )//thickness
     for(int j = 0 ; j < nEnergy; j++){
@@ -125,7 +125,7 @@ void analyzeOneMaterial(string material, int pdgID, TGraph *g[2][2][nThickness+n
 
 void extractOneFile(int e, double thick, string mat, int pdgID,
 		    double trans[2], double ref[2]){
-  string fnm = Form("./PionLeadPion%04dMeV-%03.1fcm%s/E_TranRefPionLeadPion%04dMeV-%03.1fcm%s-1e5.root",
+  string fnm = Form("./Mu%04dMeV-%03.1fcm%s/E_TranRefMu%04dMeV-%03.1fcm%s-1e5.root",
 		    e, thick, mat.c_str(), e, thick, mat.c_str());
   TFile *fin = TFile::Open(fnm.c_str(),"READ");
   TTree *t=(TTree*)fin->Get("t");
@@ -138,16 +138,16 @@ void extractOneFile(int e, double thick, string mat, int pdgID,
 
   gStyle->SetOptStat("eMRou");
   c1->cd(1);
-  t->Project("hT","prePosY:prePosX",Form("pType==%d && detID == 1 && %s",
-					 pdgID,eCut.c_str()));
+  t->Project("hT","prePosY:prePosX",Form("pType==%d && detID == 1 && %s",pdgID,eCut.c_str()));
+  //t->Project("hT","prePosY:prePosX",Form(" detID == 1 && %s",eCut.c_str()));
   hT->SetTitle(Form("%s Trans for %d %s| Ebeam=%d | thick = %f;x[mm];y[mm]",
 		    mat.c_str(),pdgID,eCut.c_str(),e,thick));
   trans[0] = hT->Integral()/nEv;
   hT->DrawCopy("colz");
   gPad->SetLogz(1);
   c1->cd(2);
-  t->Project("hR","prePosY:prePosX",Form("pType==%d && detID == 0 && %s",
-					 pdgID,eCut.c_str()));
+  t->Project("hR","prePosY:prePosX",Form("pType==%d && detID == 0 && %s",pdgID,eCut.c_str()));
+  //t->Project("hR","prePosY:prePosX",Form(" detID == 0 && %s",eCut.c_str()));
   ref[0] = hR->Integral()/nEv;
   hR->SetTitle(Form("%s Refl for %d %s| Ebeam=%d | thick = %f;x[mm];y[mm]",
 		    mat.c_str(),pdgID,eCut.c_str(),e,thick));
@@ -156,8 +156,8 @@ void extractOneFile(int e, double thick, string mat, int pdgID,
   c1->Print(onm.c_str(),"pdf");
 
   c1->cd(1);
-  t->Project("hT","prePosY:prePosX",Form("preKE*(pType==%d && detID == 1 && %s)",
-					 pdgID,eCut.c_str()));
+  t->Project("hT","prePosY:prePosX",Form("preKE*(pType==%d && detID == 1 && %s)",pdgID,eCut.c_str()));
+  //t->Project("hT","prePosY:prePosX",Form("preKE*( detID == 1 && %s)",eCut.c_str()));
   hT->SetTitle(Form("%s Eweight Trans for %d %s| E=%d | thick = %f;x[cm];y[cm]",
 		    mat.c_str(),pdgID,eCut.c_str(),e,thick));
   //trans[1] = hT->Integral()/(nEv);
@@ -165,8 +165,8 @@ void extractOneFile(int e, double thick, string mat, int pdgID,
   hT->DrawCopy("colz");
   gPad->SetLogz(1);
   c1->cd(2);
-  t->Project("hR","prePosY:prePosX",Form("preKE*(pType==%d && detID == 0 && %s)",
-					 pdgID,eCut.c_str()));
+  t->Project("hR","prePosY:prePosX",Form("preKE*(pType==%d && detID == 0 && %s)",pdgID,eCut.c_str()));
+  //t->Project("hR","prePosY:prePosX",Form("preKE*(detID == 0 && %s)",eCut.c_str()));
   //ref[1] = hR->Integral()/(nEv);
   ref[1] = hR->Integral()/(nEv*e);
   hR->SetTitle(Form("%s Eweight Refl for %d %s| E=%d | thick = %f;x[cm];y[cm]",
@@ -177,9 +177,11 @@ void extractOneFile(int e, double thick, string mat, int pdgID,
 
   c1->cd(1);
   t->Draw("preKE",Form("pType==%d && detID == 1 && %s",pdgID,eCut.c_str()));
+  //t->Draw("preKE",Form(" detID == 1 && %s",eCut.c_str()));
   gPad->SetLogy(1);
   c1->cd(2);
   t->Draw("preKE",Form("pType==%d && detID == 0 && %s",pdgID,eCut.c_str()));
+  //t->Draw("preKE",Form("detID == 0 && %s",eCut.c_str()));
   gPad->SetLogy(1);
   c1->Print(onm.c_str(),"pdf");
 

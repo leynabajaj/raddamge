@@ -46,6 +46,7 @@ mscDetectorConstruction::mscDetectorConstruction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 mscDetectorConstruction::~mscDetectorConstruction()
 { 
+G4cout<<"Construct with target made out of "<<targetMaterial<<" of Length "<<targetLen/cm<<" cm."<<G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -313,7 +314,7 @@ void mscDetectorConstruction::DefineMaterials()
   BariteConcrete->AddMaterial(barite,weightRatio=0.8578);
 
   // Print materials
-  G4cout << G4endl << G4endl << "~~~~~~~~~~~~~~~~~~~~~Material Printout~~~~~~~~~~~~~~~~~~~~~~~~" << G4endl;
-  G4cout << *(G4Material::GetMaterialTable()) << G4endl << G4endl;
+  //G4cout << G4endl << G4endl << "~~~~~~~~~~~~~~~~~~~~~Material Printout~~~~~~~~~~~~~~~~~~~~~~~~" << G4endl;
+  //G4cout << *(G4Material::GetMaterialTable()) << G4endl << G4endl;
 }
 
