@@ -44,10 +44,12 @@ mscPrimaryGeneratorAction::~mscPrimaryGeneratorAction()
 
 void mscPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {  
+  
+  gunEnergy = 1000 * G4UniformRand();
 
   // Set gun position
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -0.25*cm));
-
+  
   fParticleGun->SetParticleEnergy(gunEnergy);
   
   fParticleGun->GeneratePrimaryVertex(anEvent);

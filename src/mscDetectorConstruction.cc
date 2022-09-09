@@ -37,7 +37,7 @@
 
 mscDetectorConstruction::mscDetectorConstruction()
  : G4VUserDetectorConstruction(),
-   targetLen(20*cm),
+   targetLen(6*cm),
    targetMaterial("G4_W"),
    fCheckOverlaps(true)
 {  
@@ -54,7 +54,6 @@ void mscDetectorConstruction::UpdateGeometry()
 {
     // taken from LXe example
   G4GeometryManager::GetInstance()->OpenGeometry();
-
   // clean up previous geometry
   G4PhysicalVolumeStore  ::GetInstance()->Clean();
   G4LogicalVolumeStore   ::GetInstance()->Clean();
@@ -76,7 +75,8 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
 
   // Get materials
   G4Material* vacuumMaterial = G4Material::GetMaterial("Galactic");
-  G4Material* tgtMaterial = G4Material::GetMaterial(targetMaterial);
+  G4Material* tgtMaterial = G4Material::GetMaterial("G4_W"); // tungsten plate
+  G4Material* tgtMaterial2 = G4Material::GetMaterial("G4_Pb"); // lead plate
   G4Material* tgtMaterial1 = G4Material::GetMaterial("G4_CONCRETE");
 
   if ( !tgtMaterial || !vacuumMaterial) {
@@ -109,7 +109,8 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
 
   //Target
   G4double tgtR = 200 * cm;
-
+  G4double targetLen2 = 5.04 * cm;
+  // Tungsten block
   G4VSolid* tgtS 
     = new G4Tubs("targetS",           // its name
                  0, tgtR, targetLen/2., //inner R, outer R, length
@@ -119,18 +120,39 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
                  tgtS,           // its solid
                  tgtMaterial,  // its material
                  "targetL");         // its name
+
   G4Colour  blue(0/255.,0/255.,255/255.);
   G4VisAttributes* tgtVisAtt = new G4VisAttributes(blue);
   tgtVisAtt->SetForceSolid(true);
   tgtVisAtt->SetVisibility(true);
   tgtL->SetVisAttributes(tgtVisAtt);
   new G4PVPlacement(0,G4ThreeVector(0,0,targetLen/2.),
-                 tgtL,             // its logical volume                         
-                 "target",         // its name
+                 tgtL,             // its logical volume                     
+                "target",         // its name
                  worldLV,          // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
+ // Lead block
+ G4VSolid* tgtS2 
+   = new G4Tubs("targetS2", // its name
+                0, tgtR, targetLen2/2.,
+                0*deg,360*deg);
+
+ G4LogicalVolume* tgtL2
+   = new G4LogicalVolume(
+                tgtS2,    // its solid
+                tgtMaterial2,  // its material
+                "targetL2"); // its name
+
+ tgtL2->SetVisAttributes(tgtVisAtt);
+ new G4PVPlacement(0,G4ThreeVector(0,0,targetLen2/2. + targetLen/2.),
+               tgtL2,           // its logical volume
+               "target2",       // its name
+               worldLV,        // its mother volume
+               false,        // no boolean operation
+               0,           // copy number
+               fCheckOverlaps);  // checking overlaps
 /*
   G4VSolid* tgtS1 
     = new G4Tubs("targetS1",           // its name
@@ -193,7 +215,7 @@ G4VPhysicalVolume* mscDetectorConstruction::Construct()
                  vacuumMaterial,  // its material
                  "detDS_L");         // its name
   detDS_L->SetVisAttributes(detVisAtt);
-  new G4PVPlacement(0,G4ThreeVector(0,0,targetLen + 0.5*cm),
+  new G4PVPlacement(0,G4ThreeVector(0,0,targetLen + targetLen2 + 0.5*cm),
                  detDS_L,             // its logical volume                         
                  "detDS_PV",         // its name
                  worldLV,          // its mother  volume
