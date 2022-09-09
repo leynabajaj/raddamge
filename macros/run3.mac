@@ -1,0 +1,4 @@
+/msc/event/setPrintModulo 10000
+/msc/det/updateGeometry
+/msc/step/setOutFileName o_tranRef_tst.root
+/run/beamOn 100000
